@@ -46,9 +46,9 @@ commonView p t b = do
 
 homeView :: App (Html ())
 homeView = commonView False "Image Upload" $
-    form_ $ do
+    (form_ $ do
       input_ [type_ "file", name_ "map"]
-      input_ [type_ "submit"]
+      input_ [type_ "submit"])
     `with` [ method_ "post"
            , action_ (link @Upload)
            , enctype_ "multipart/form-data"
