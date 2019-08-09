@@ -1,14 +1,18 @@
 let
   overlay = self: super: {
-    haskellPackages = super.haskellPackages.override {
-      overrides = hself: hsuper: {
-        friday-devil = self.haskell.lib.doJailbreak hsuper.friday-devil;
-        clay = self.haskell.lib.doJailbreak hsuper.clay;
-        tomland = self.haskell.lib.dontCheck hsuper.tomland;
+    haskellPackages =
+      let
+        markUnbroken = drv: self.haskell.lib.overrideCabal drv (drv: { broken = false; });
+      in
+        super.haskellPackages.override {
+          overrides = hself: hsuper: with self.haskell.lib; {
+            friday-devil = markUnbroken (doJailbreak hsuper.friday-devil);
+            clay = markUnbroken (doJailbreak hsuper.clay);
+            tomland = markUnbroken (dontCheck hsuper.tomland);
 
-        lambdamap = hself.callPackage ./default.nix {};
-      };
-    };
+            lambdamap = hself.callPackage ./default.nix {};
+          };
+        };
   };
 
   pkgs = import <nixpkgs> { overlays = [ overlay ]; };
