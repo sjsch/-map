@@ -6,7 +6,6 @@ license-file:        LICENSE
 author:              Sam Schweigel
 maintainer:          s.schweigel@gmail.com
 build-type:          Simple
-extra-source-files:  CHANGELOG.md
 
 library
   hs-source-dirs:     src
