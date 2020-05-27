@@ -14,7 +14,7 @@ import           System.Random
 
 import           App
 import           Database
-import           Lambdamap
+import           Tiles
 
 generateLink :: IO Text
 generateLink = pack <$> replicateM 10 (randomRIO ('a', 'z'))

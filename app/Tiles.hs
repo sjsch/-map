@@ -6,7 +6,7 @@
 {-# LANGUAGE Strict              #-}
 {-# LANGUAGE TypeFamilies        #-}
 
-module Lambdamap
+module Tiles
   ( generateTiles
   ) where
 

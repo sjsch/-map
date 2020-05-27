@@ -31,7 +31,7 @@ let
 
 in
 
-pkgs.dockerTools.buildImage {
+pkgs.dockerTools.buildLayeredImage {
   name = "lambdamap";
 
   config = {
