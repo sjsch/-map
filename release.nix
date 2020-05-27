@@ -15,8 +15,33 @@ let
         };
   };
 
-  pkgs = import <nixpkgs> { overlays = [ overlay ]; };
+  pkgs = import
+    (fetchTarball https:///github.com/NixOS/nixpkgs-channels/archive/nixos-20.03.tar.gz)
+    { overlays = [ overlay ]; };
 
-in {
-  lambdamap = pkgs.haskellPackages.lambdamap;
+  config = pkgs.writeText "lambdamap-config.toml" ''
+    [server]
+      port = 3000
+      root = "/"
+
+    [storage]
+      database = "/data/lambdamap.sqlite"
+      tiles = "/data/tiles"
+  '';
+
+in
+
+pkgs.dockerTools.buildImage {
+  name = "lambdamap";
+
+  config = {
+    Cmd = [ "${pkgs.haskellPackages.lambdamap}/bin/lambdamap-web" "--config" config ];
+    ExposedPorts = {
+      "3000/tcp" = {};
+    };
+    WorkingDir = "/data";
+    Volumes = {
+      "/data" = {};
+    };
+  };
 }
